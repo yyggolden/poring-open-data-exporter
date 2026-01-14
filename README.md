@@ -1,1 +1,1 @@
-# poring-open-data-exporter
+Supabase open data CSV exporter (daily)
