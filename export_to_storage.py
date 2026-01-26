@@ -70,19 +70,6 @@ def export_overwrite(table: str, out_path: str):
     upload_to_storage(out_path, rows_to_csv_bytes(rows))
     print(f"[OK] rows={len(rows)} uploaded")
 
-def export_rental_logs_daily():
-    dt_str, start_iso, end_iso = seoul_yesterday_range()
-
-    # PostgREST: and=(col.gte.<start>,col.lt.<end>)
-    and_filter = f"({RENTAL_DATE_COL}.gte.{start_iso},{RENTAL_DATE_COL}.lt.{end_iso})"
-    params = {"and": and_filter}
-
-    out_path = f"{BASE_PATH}/rental_logs/dt={dt_str}/rental_logs.csv"
-    print(f"[EXPORT daily] rental_logs dt={dt_str} -> {BUCKET}/{out_path}")
-
-    rows = fetch_all_rows(table="rental_logs", extra_params=params)
-    upload_to_storage(out_path, rows_to_csv_bytes(rows))
-    print(f"[OK] rows={len(rows)} uploaded")
 
 def main():
     overwrite_datasets = [
@@ -91,12 +78,12 @@ def main():
         ("hubs", f"{BASE_PATH}/hubs.csv"),
         ("stations", f"{BASE_PATH}/stations.csv"),
         ("bikes", f"{BASE_PATH}/bikes.csv"),
+        ("rental_logs", f"{BASE_PATH}/rental_logs.csv"),
     ]
 
     for table, out_path in overwrite_datasets:
         export_overwrite(table, out_path)
-
-    export_rental_logs_daily()
+        
 
 if __name__ == "__main__":
     main()
