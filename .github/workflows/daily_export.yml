@@ -28,6 +28,5 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           SUPABASE_BUCKET: open-data
           SUPABASE_BASE_PATH: datasets
-          RENTAL_DATE_COL: rental_start_date
         run: |
           python export_to_storage.py
